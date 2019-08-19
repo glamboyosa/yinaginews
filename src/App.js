@@ -6,7 +6,7 @@ class App extends Component {
     return (
       <Router>
         <Routes />
-        <div className="App">{/* <USNews /> */}</div>
+        <div className="App" />
       </Router>
     );
   }
