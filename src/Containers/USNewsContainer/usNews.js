@@ -3,10 +3,12 @@ import axios from "axios";
 import classes from "./usnews.module.css";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import USnewsPosts from "../../Components/USNewsComponent/usNewsPosts";
+import Modal from "../../Components/Modal/modal";
 class USNews extends Component {
   state = {
     news: null,
-    loaded: false
+    loaded: false,
+    error: false
   };
   componentDidMount() {
     axios
@@ -17,10 +19,19 @@ class USNews extends Component {
           loaded: true
         });
         console.log(this.state.news);
-      });
+      })
+      .catch(e => this.setState({ error: e.message }));
   }
+  reloadPage = () => {
+    // console.log(this.props.history);
+    window.location = "/us-news";
+  };
+
   render() {
     let news = <Spinner />;
+    if (this.state.error) {
+      news = <Modal clicked={this.reloadPage}>{this.state.error}</Modal>;
+    }
     if (this.state.loaded) {
       news = this.state.news.slice(0, 8).map(el => {
         return (

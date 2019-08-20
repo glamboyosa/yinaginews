@@ -1,0 +1,17 @@
+.Modal {
+  position: fixed;
+  z-index: 400;
+  margin: 28% 0;
+  padding: 20px 30px;
+  box-shadow: 2px 3px 3px black;
+  height: auto;
+}
+button {
+  padding: 3px 10px;
+  text-transform: uppercase;
+  font-family: inherit;
+  font-size: 50%;
+}
+.div {
+  float: right;
+}

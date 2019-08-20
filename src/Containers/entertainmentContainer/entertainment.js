@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import axios from "axios";
 import classes from "./style.module.css";
 import Spinner from "../../Components/UI/Spinner/Spinner";
+import Modal from "../../Components/Modal/modal";
 import EntertainmentPosts from "../../Components/entertainmentComponent/entertainmentPosts";
 class Entertainment extends Component {
   state = {
     news: null,
-    loaded: false
+    loaded: false,
+    error: false
   };
   componentDidMount() {
     axios
@@ -19,10 +21,17 @@ class Entertainment extends Component {
           loaded: true
         });
         console.log(this.state.news);
-      });
+      })
+      .catch(e => this.setState({ error: e.message }));
   }
+  reloadPage = () => {
+    window.location = "/entertainment";
+  };
   render() {
     let news = <Spinner />;
+    if (this.state.error) {
+      news = <Modal clicked={this.reloadPage}>{this.state.error}</Modal>;
+    }
     if (this.state.loaded) {
       news = this.state.news.slice(5, 13).map(el => {
         return (

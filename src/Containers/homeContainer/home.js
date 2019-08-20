@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 import classes from "./style.module.css";
+import { withRouter } from "react-router-dom";
 import HomePosts from "../../Components/homeComponent/homePosts";
 import Spinner from "../../Components/UI/Spinner/Spinner";
+import Modal from "../../Components/Modal/modal";
 class Home extends Component {
   state = {
     news: null,
-    loaded: false
+    loaded: false,
+    error: false
   };
   componentDidMount() {
     axios
@@ -17,10 +20,21 @@ class Home extends Component {
           loaded: true
         });
         console.log(this.state.news);
-      });
+      })
+      .catch(e => this.setState({ error: e.message }));
   }
+
+  reloadPage = () => {
+    // console.log(this.props.history);
+    window.location = "/";
+  };
   render() {
     let news = <Spinner />;
+    console.log(this.state.error);
+
+    if (this.state.error) {
+      news = <Modal clicked={this.reloadPage}>{this.state.error}</Modal>;
+    }
     if (this.state.loaded) {
       news = this.state.news.slice(0, 8).map(el => {
         return (
@@ -38,4 +52,4 @@ class Home extends Component {
     return <div className={classes.Content}>{news}</div>;
   }
 }
-export default Home;
+export default withRouter(Home);
